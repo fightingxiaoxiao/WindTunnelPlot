@@ -1,0 +1,31 @@
+#需要分析的数据类型：avg，max，min，std
+valueType: ['avg']
+
+#区域部件名称
+regionName: ['AC']
+
+#风攻角
+angle: [0, 15]
+
+#迭代次数
+iteration: 100000
+
+#工作路径
+workDir: /run/media/smilemax/Data/wind_tunnel_data/
+
+#数据文件
+dataFile: /run/media/smilemax/Data/wind_tunnel_data/out_2.xlsx
+
+#平台
+# windows，VS 2019，串行
+# linux， GCC 11.1， OpenMP
+platform: linux
+
+#
+scaleCoeff: 1
+
+#
+contourDelta: 0.1
+
+#云图保存路径
+saveFolder: /run/media/smilemax/Data/wind_tunnel_data/contour
