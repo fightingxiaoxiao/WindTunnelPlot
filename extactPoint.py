@@ -13,7 +13,7 @@ def readPoints(filename):
                 prop = line.split()[0]
             except IndexError:
                 pass
-            if prop == 'o':
+            if prop == 'g':
                 objectName = line.split()[1]
                 if objectName[:6] != 'object':
                     flag = True
