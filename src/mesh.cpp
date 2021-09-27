@@ -75,7 +75,7 @@ namespace SMILE
 
             auto line_list = splitStr(strLine, (Word) " ");
 
-            if (line_list[0] == (Word) "g")
+            if (line_list[0] == (Word) "o")
             {
                 if (line_list.size() > 1)
                 {

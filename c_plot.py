@@ -19,8 +19,8 @@ def convertRawDataFromExcelToCSV(filename, angle, valueType, region_head):
     if not os.path.exists('./contour_data'):
         os.mkdir('./contour_data')
 
-    data.to_csv('./contour_data/'+region_head +
-                '_'+str(angle)+'_'+valueType+'.csv', header=0, index=0)
+    data.to_csv('./contour_data/' + region_head +
+                '_' + str(angle) + '_' + valueType + '.csv', header=0, index=0)
 
 
 def readCSV(filename):
@@ -58,32 +58,33 @@ def contour(dataFile, cellFile, region_name, angle, value_type, delta_level, sav
 
     z = np.array(z)
     z *= coeff
-    #print(delta_level)
-    up = int(np.max(z)/delta_level)
-    down = int(np.min(z)/delta_level)
+    # print(delta_level)
+    up = int(np.max(z) / delta_level)
+    down = int(np.min(z) / delta_level)
 
-    if up > 0:
+    if up >= 0:
         up += 1
 
     if down < 0:
         down -= 1
 
-    level = [delta_level*i for i in range(down, up)]
+    level = [delta_level * i for i in range(down, up)]
     ax1.set_aspect('equal')
     tcf = ax1.tricontourf(x, y, triang, z, cmap='jet', levels=level)
     fig1.colorbar(tcf)
     ax1.tricontour(x, y, triang, z, colors='k',
                    linestyles='solid', linewidths=1, levels=level)
-    ax1.set_title(region_name+'_'+str(angle)+'_'+value_type)
+    ax1.set_title(region_name + '_' + str(angle) + '_' + value_type)
     plt.axis('off')
 
     if saveFileFolder is None:
         plt.show()
     else:
-        saveFileName = region_name+'_'+str(angle)+'_'+value_type+'.jpg'
-        if not os.path.exists('./'+saveFileFolder):
-            os.mkdir('./'+saveFileFolder)
-        plt.savefig('./'+saveFileFolder+'/'+saveFileName, dpi=400)
+        saveFileName = region_name + '_' + \
+            str(angle) + '_' + value_type + '.jpg'
+        if not os.path.exists('./' + saveFileFolder):
+            os.mkdir('./' + saveFileFolder)
+        plt.savefig('./' + saveFileFolder + '/' + saveFileName, dpi=400)
 
 
 def processList(filename, region_list, angle_list, type_list, iters, work_dir, delta_level, saveFileFolder, coeff=1):
@@ -94,14 +95,14 @@ def processList(filename, region_list, angle_list, type_list, iters, work_dir, d
                               work_dir, delta_level, saveFileFolder, coeff)
 
 
-def processSingle(filename, region, angle, value_type, iters, work_dir, delta_level, saveFileFolder=None, coeff=1, platform='windows',block_x=100, block_y=100):
+def processSingle(filename, region, angle, value_type, iters, work_dir, delta_level, saveFileFolder=None, coeff=1, platform='windows', block_x=100, block_y=100):
     os.chdir(work_dir)
-    dataFile = work_dir+'/out_tmp/'+region + \
-        '_'+str(angle)+'_'+value_type+'_interp'+'.csv'
-    cellFile = work_dir+'/out_tmp/'+region+'_' + \
-        str(angle)+'_'+value_type+'_cell_info'+'.csv'
-    zoneAvgFile = work_dir+'/out_coeff/'+region+'_' + \
-        str(angle)+'_'+value_type+'_coeff'+'.csv'
+    dataFile = work_dir + '/out_tmp/' + region + \
+        '_' + str(angle) + '_' + value_type + '_interp' + '.csv'
+    cellFile = work_dir + '/out_tmp/' + region + '_' + \
+        str(angle) + '_' + value_type + '_cell_info' + '.csv'
+    zoneAvgFile = work_dir + '/out_coeff/' + region + '_' + \
+        str(angle) + '_' + value_type + '_coeff' + '.csv'
 
     if not os.path.exists('./out_tmp'):
         os.mkdir('./out_tmp')
@@ -109,13 +110,13 @@ def processSingle(filename, region, angle, value_type, iters, work_dir, delta_le
         os.mkdir('./out_coeff')
 
     convertRawDataFromExcelToCSV(filename, angle, value_type, region)
-    if platform=="windows":
+    if platform == "windows":
         execute = 'wsl -e ./windtunnel_tool'
-    elif platform=="linux":
+    elif platform == "linux":
         execute = './windtunnel_tool'
-    command = execute+' ' + \
-        work_dir+'/data/'+region+'.obj' + ' ' + \
-        work_dir+'/contour_data/'+region+'_'+str(angle)+'_'+value_type+'.csv' + ' ' + \
+    command = execute + ' ' + \
+        work_dir + '/data/' + region + '.obj' + ' ' + \
+        work_dir + '/contour_data/' + region + '_' + str(angle) + '_' + value_type + '.csv' + ' ' + \
         dataFile + ' ' + \
         cellFile + ' ' + \
         zoneAvgFile + ' ' + \
@@ -129,16 +130,16 @@ def processSingle(filename, region, angle, value_type, iters, work_dir, delta_le
 
 
 if __name__ == "__main__":
-    """
+
     value_type = 'avg'  # avg: 平均值, max: 最大值, min: 最小值, std: 标准差
-    region_name = 'AC'
-    angle = 270
-    iteration = 100000    #work_dir = 'F:/wind_tunnel_data'
+    region_name = 'AU'
+    angle = 0
+    iteration = 100000  # work_dir = 'F:/wind_tunnel_data'
     work_dir = '.'
-    filename = 'out_2.xlsx'
+    filename = 'test.xlsx'
 
     processSingle(filename, region_name, angle, value_type,
-                  iteration, work_dir, 0.1, saveFileFolder=None, coeff=1/0.5/1.225/6/6, platform="linux",block_x=300, block_y=100)
+                  iteration, work_dir, 0.1, saveFileFolder=None, coeff=1, platform="linux", block_x=150, block_y=150)
     """
     
     type_list = ['avg']
@@ -150,3 +151,4 @@ if __name__ == "__main__":
     processList(filename, region_list, angle_list, type_list,
                 iteration, work_dir, 0.2, 'contour', 1/0.5/1.225/6/6, platform="linux")
 
+    """
